@@ -137,7 +137,8 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           try {
             // Sync user to backend Prisma DB
             const userMeta = session.user.user_metadata;
-            const res = await fetch('http://localhost:5000/api/auth/sync', {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            const res = await fetch(`${API_URL}/api/auth/sync`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

@@ -114,7 +114,7 @@ export const LoginPage: React.FC = () => {
 
         {/* Floating AI Orb */}
         <div className="mb-6">
-          <AIOrb size="sm" state={isLoading ? 'processing' : 'idle'} />
+          <AIOrb size="sm" state={isLoading ? 'thinking' : 'idle'} />
         </div>
 
         <Card className="w-full p-8 shadow-premium border-slate-100/50">

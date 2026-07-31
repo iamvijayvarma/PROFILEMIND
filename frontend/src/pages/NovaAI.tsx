@@ -3,7 +3,7 @@ import { Send, Sparkles, Mic, FileText, Brain, Loader } from 'lucide-react';
 import { useAppState } from '../context/AppState';
 
 export const NovaAI: React.FC = () => {
-  const { messages, addMessage, documents, addToast } = useAppState();
+  const { messages, addMessage, addToast } = useAppState();
   const [query, setQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -29,7 +29,8 @@ export const NovaAI: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/nova/chat', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${API_URL}/api/nova/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
