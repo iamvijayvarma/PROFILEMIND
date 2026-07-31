@@ -132,13 +132,13 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session) {
         localStorage.setItem('token', session.access_token);
-        
+
         if (event === 'SIGNED_IN') {
           try {
             // Sync user to backend Prisma DB
             const userMeta = session.user.user_metadata;
             const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-            const res = await fetch(`${API_URL}/api/auth/sync`, {
+            const res = await fetch(`${API_URL}/auth/sync`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -220,7 +220,7 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const id = 'doc-' + Math.random().toString(36).substr(2, 9);
     const type = file.name.endsWith('.pdf') ? 'pdf' : file.name.endsWith('.docx') ? 'docx' : 'image';
     const size = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
-    
+
     const newDoc: DocumentData = {
       id,
       name: file.name,
@@ -270,7 +270,7 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const triggerProcessing = (id: string) => {
     let step = 0;
-    
+
     const processInterval = setInterval(() => {
       step += 1;
       setDocuments((prevDocs) =>
