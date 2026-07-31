@@ -1,6 +1,9 @@
 {
   "name": "profilemind-backend",
   "version": "1.0.0",
+  "engines": {
+    "node": "22.x"
+  },
   "description": "Production-ready backend API for ProfileMind AI Digital Identity Platform",
   "main": "dist/server.js",
   "scripts": {
