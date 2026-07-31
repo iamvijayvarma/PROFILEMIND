@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  password       String
+  fullName       String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  profile        Profile?
+  documents      Document[]
+  timelineEvents TimelineEvent[]
+  chatMessages   ChatMessage[]
+
+  @@map("users")
+}
+
+model Profile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline      String?
+  bio           String?
+  phone         String?
+  location      String?
+  dob           String?
+  linkedin      String?
+  github        String?
+  portfolio     String?
+  preferredRole String?
+  skills        Json?
+  avatarUrl     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model Document {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originalName  String
+  fileName      String
+  fileUrl       String
+  mimeType      String
+  fileSize      Int
+  uploadStatus  String   @default("uploaded")
+  extractedData Json?
+  confidence    Float    @default(0.0)
+  uploadDate    DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("documents")
+}
+
+model TimelineEvent {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  category    String
+  date        String
+  tags        Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("timeline_events")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   // 'user' | 'ai'
+  content   String
+  citations Json?
+  createdAt DateTime @default(now())
+
+  @@map("chat_messages")
+}
